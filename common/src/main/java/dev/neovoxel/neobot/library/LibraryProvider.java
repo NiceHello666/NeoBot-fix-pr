@@ -14,10 +14,10 @@ public interface LibraryProvider {
     default void loadBasicLibrary(NeoBot plugin) throws Throwable {
         ExternalLoader.setClassLoader(Thread.currentThread().getContextClassLoader());
         JarFlow.setLibDir(new File(plugin.getDataFolder(), "libs"));
-        Dependency nbApi = Dependency.builder()
-                .groupId("dev.neovoxel.nbapi")
-                .artifactId("NeoBotAPI")
-                .version("1.2.1")
+        Dependency wsApi = Dependency.builder()
+                .groupId("org.java-websocket")
+                .artifactId("Java-WebSocket")
+                .version("1.6.0")
                 .build();
         Dependency hikariCp;
         if (Float.parseFloat(System.getProperty("java.specification.version")) < 11) {
@@ -33,14 +33,9 @@ public interface LibraryProvider {
                     .version("7.0.2")
                     .build();
         }
-        Dependency nsApi = Dependency.builder()
-                .groupId("dev.neovoxel.nsapi")
-                .artifactId("NeoStorageAPI")
-                .version("1.0.0")
-                .build();
         JarFlow.addRepository(Repository.mavenCentral());
         JarFlow.addRepository(Repository.builder().url("https://maven.aliyun.com/repository/public").build());
-        JarFlow.loadDependencies(ListUtil.of(nbApi, hikariCp, nsApi));
+        JarFlow.loadDependencies(ListUtil.of(wsApi, hikariCp));
         if (Float.parseFloat(System.getProperty("java.specification.version")) < 17) {
             Dependency js = Dependency.builder()
                     .groupId("org.graalvm.js")

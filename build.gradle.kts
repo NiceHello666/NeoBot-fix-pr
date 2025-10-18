@@ -20,15 +20,17 @@ subprojects {
 
     dependencies {
         // basic
-        implementation("dev.neovoxel.jarflow:JarFlow:1.3.1")
+        implementation("dev.neovoxel.jarflow:JarFlow:1.4.0")
         compileOnly("org.java-websocket:Java-WebSocket:1.6.0")
-        compileOnly("dev.neovoxel.nbapi:NeoBotAPI:1.2.1")
+        implementation("dev.neovoxel.nbapi:NeoBotAPI:1.2.1") {
+            exclude("org.java-websocket")
+        }
         compileOnly("org.json:json:20250517")
         compileOnly("org.slf4j:slf4j-api:2.0.17")
         compileOnly("org.graalvm.js:js:22.0.0.2")
 
         // storage
-        compileOnly("dev.neovoxel.nsapi:NeoStorageAPI:1.0.0")
+        implementation("dev.neovoxel.nsapi:NeoStorageAPI:1.0.0")
         compileOnly("com.zaxxer:HikariCP:4.0.3")
         compileOnly("com.mysql:mysql-connector-j:8.2.0")
         compileOnly("org.mariadb.jdbc:mariadb-java-client:3.5.6")
@@ -53,7 +55,6 @@ subprojects {
     tasks.shadowJar {
         archiveFileName.set("NeoBot-${archiveFileName.get()}")
         relocate("org.bstats", "dev.neovoxel.neobot.libs.bstats")
-        relocate("org.json", "dev.neovoxel.neobot.libs.json")
     }
 
 
