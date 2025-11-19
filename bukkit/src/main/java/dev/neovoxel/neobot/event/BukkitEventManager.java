@@ -43,11 +43,4 @@ public class BukkitEventManager implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         plugin.getGameEventListener().onJoin(new BukkitPlayer(event.getPlayer()));
     }
-
-    @EventHandler
-    public void onPluginDisable(PluginDisableEvent event) {
-        if (event.getPlugin().getName().equalsIgnoreCase("NeoBot")) {
-            plugin.getGameEventListener().onPluginDisable();
-        }
-    }
 }

@@ -19,6 +19,8 @@ import dev.neovoxel.neobot.adapter.NeoLogger;
 import dev.neovoxel.neobot.adapter.OfflinePlayer;
 import dev.neovoxel.neobot.adapter.Player;
 import dev.neovoxel.nsapi.DatabaseStorage;
+import lombok.Getter;
+import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,19 +29,33 @@ import org.graalvm.polyglot.HostAccess;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class NeoBotBukkit extends JavaPlugin implements NeoBot {
-    private GameEventListener listener;
-    private BotListener botListener;
-    private EnhancedConfig generalConfig;
-    private boolean scriptSystemLoaded = false;
-    private List<Script> scripts = new ArrayList<>();
-    private DatabaseStorage storage;
-    private String storageType;
+    private GameEventListener gameEventListener;
+
+    @Setter
     private BotProvider botProvider;
+
+    @Setter
     private ScriptProvider scriptProvider;
-    private CommandProvider commandProvider;
+
+    @Setter
     private EnhancedConfig messageConfig;
+
+    @Setter
+    private EnhancedConfig generalConfig;
+
+    @Setter
     private ScriptConfig scriptConfig;
+
+    @Setter
+    private DatabaseStorage storage;
+
+    @Setter
+    private String storageType;
+
+    @Setter
+    private CommandProvider commandProvider;
 
     @Override
     public NeoLogger getNeoLogger() {
@@ -49,62 +65,7 @@ public class NeoBotBukkit extends JavaPlugin implements NeoBot {
     @Override
     public void setGameEventListener(GameEventListener listener) {
         Bukkit.getPluginManager().registerEvents(new BukkitEventManager(this), this);
-        this.listener = listener;
-    }
-
-    @Override
-    public GameEventListener getGameEventListener() {
-        return listener;
-    }
-
-    @Override
-    public BotProvider getBotProvider() {
-        return botProvider;
-    }
-
-    @Override
-    public void setBotProvider(BotProvider botProvider) {
-        this.botProvider = botProvider;
-    }
-
-    @Override
-    public ScriptProvider getScriptProvider() {
-        return scriptProvider;
-    }
-
-    @Override
-    public void setScriptProvider(ScriptProvider scriptProvider) {
-        this.scriptProvider = scriptProvider;
-    }
-
-    @Override
-    public void setGeneralConfig(EnhancedConfig config) {
-        this.generalConfig = config;
-    }
-
-    @Override
-    public EnhancedConfig getGeneralConfig() {
-        return generalConfig;
-    }
-
-    @Override
-    public void setScriptConfig(ScriptConfig scriptConfig) {
-        this.scriptConfig = scriptConfig;
-    }
-
-    @Override
-    public ScriptConfig getScriptConfig() {
-        return scriptConfig;
-    }
-
-    @Override
-    public void setMessageConfig(EnhancedConfig messageConfig) {
-        this.messageConfig = messageConfig;
-    }
-
-    @Override
-    public EnhancedConfig getMessageConfig() {
-        return messageConfig;
+        this.gameEventListener = listener;
     }
 
     @Override
@@ -143,27 +104,6 @@ public class NeoBotBukkit extends JavaPlugin implements NeoBot {
     }
 
     @Override
-    public void setStorage(DatabaseStorage storage) {
-        this.storage = storage;
-    }
-
-    @Override
-    @HostAccess.Export
-    public DatabaseStorage getStorage() {
-        return storage;
-    }
-
-    @Override
-    public String getStorageType() {
-        return storageType;
-    }
-
-    @Override
-    public void setStorageType(String storageType) {
-        this.storageType = storageType;
-    }
-
-    @Override
     public void onEnable() {
         this.enable();
     }
@@ -176,16 +116,6 @@ public class NeoBotBukkit extends JavaPlugin implements NeoBot {
     @Override
     public void broadcast(String message) {
         Bukkit.broadcastMessage(message);
-    }
-
-    @Override
-    public void setCommandProvider(CommandProvider commandProvider) {
-        this.commandProvider = commandProvider;
-    }
-
-    @Override
-    public CommandProvider getCommandProvider() {
-        return commandProvider;
     }
 
     @Override

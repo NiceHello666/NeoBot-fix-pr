@@ -49,6 +49,7 @@ public interface NeoBot extends ConfigProvider, GameProvider, LibraryProvider, S
     }
     
     default void disable() {
+        getGameEventListener().onPluginDisable();
         getGeneralConfig().flush(this);
         getMessageConfig().flush(this);
         getScriptConfig().flush(this);

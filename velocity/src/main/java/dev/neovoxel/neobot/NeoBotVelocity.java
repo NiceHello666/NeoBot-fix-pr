@@ -1,0 +1,175 @@
+package dev.neovoxel.neobot;
+
+import dev.neovoxel.neobot.adapter.VelocityOfflinePlayer;
+import dev.neovoxel.neobot.adapter.VelocityPlayer;
+import dev.neovoxel.neobot.adapter.VelocitySchedulerTask;
+import com.google.inject.Inject;
+import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.util.GameProfile;
+import dev.neovoxel.neobot.adapter.*;
+import dev.neovoxel.neobot.bot.BotProvider;
+import dev.neovoxel.neobot.command.CommandProvider;
+import dev.neovoxel.neobot.config.EnhancedConfig;
+import dev.neovoxel.neobot.config.ScriptConfig;
+import dev.neovoxel.neobot.game.GameEventListener;
+import dev.neovoxel.neobot.scheduler.ScheduledTask;
+import dev.neovoxel.neobot.script.ScriptProvider;
+import dev.neovoxel.nsapi.DatabaseStorage;
+import lombok.Getter;
+import lombok.Setter;
+import net.kyori.adventure.text.Component;
+import org.slf4j.Logger;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.time.Duration;
+
+@Plugin(id = "neobot", name = "NeoBot", version = "0.1", authors = {"NeoVoxelDev Team"}, description = "A bot plugin that connects Minecraft with QQ, Kook, Discord, etc.")
+public class NeoBotVelocity implements NeoBot {
+
+    @Getter
+    private final ProxyServer proxyServer;
+    private final Logger logger;
+    private final Path dataDirectory;
+
+    @Getter
+    private GameEventListener gameEventListener;
+
+    @Getter
+    @Setter
+    private BotProvider botProvider;
+
+    @Getter
+    @Setter
+    private ScriptProvider scriptProvider;
+
+    @Getter
+    @Setter
+    private EnhancedConfig messageConfig;
+
+    @Getter
+    @Setter
+    private EnhancedConfig generalConfig;
+
+    @Getter
+    @Setter
+    private ScriptConfig scriptConfig;
+
+    @Getter
+    @Setter
+    private DatabaseStorage storage;
+
+    @Getter
+    @Setter
+    private String storageType;
+
+    @Getter
+    @Setter
+    private CommandProvider commandProvider;
+
+    @Inject
+    public NeoBotVelocity(ProxyServer proxyServer, Logger logger, Path dataDirectory) {
+        this.proxyServer = proxyServer;
+        this.logger = logger;
+        this.dataDirectory = dataDirectory;
+    }
+
+    @Override
+    public NeoLogger getNeoLogger() {
+        return new DefaultNeoLogger(logger);
+    }
+
+    @Override
+    public File getDataFolder() {
+        return dataDirectory.toFile();
+    }
+
+    @Override
+    public void setGameEventListener(GameEventListener listener) {
+        this.gameEventListener = listener;
+    }
+
+    @Override
+    public void registerCommands() {
+        VelocityCommandProvider commandProvider1 = new VelocityCommandProvider(this);
+        commandProvider1.registerCommand();
+    }
+
+    @Override
+    public String getPlatform() {
+        return proxyServer.getVersion().getName();
+    }
+
+    @Override
+    public boolean isPluginLoaded(String name) {
+        return proxyServer.getPluginManager().isLoaded(name);
+    }
+
+    @Override
+    public RemoteExecutor getExecutorByName(String name) {
+        return null;
+    }
+
+    @Override
+    public Player getOnlinePlayer(String name) {
+        return new VelocityPlayer(proxyServer.getPlayer(name).get());
+    }
+
+    @Override
+    public Player[] getOnlinePlayers() {
+        return proxyServer.getAllPlayers().stream().map(VelocityPlayer::new).toArray(VelocityPlayer[]::new);
+    }
+
+    @Override
+    public OfflinePlayer getOfflinePlayer(String name) {
+        return new VelocityOfflinePlayer(proxyServer, GameProfile.forOfflinePlayer(name));
+    }
+
+    @Override
+    public void broadcast(String message) {
+        proxyServer.sendMessage(Component.text(message));
+    }
+
+    @Override
+    public String externalParsePlaceholder(String message, OfflinePlayer player) {
+        return message;
+    }
+
+    @Override
+    public ScheduledTask submit(Runnable task) {
+        return new VelocitySchedulerTask(proxyServer.getScheduler().buildTask(this, task).schedule());
+    }
+
+    @Override
+    public ScheduledTask submitAsync(Runnable task) {
+        return submit(task);
+    }
+
+    @Override
+    public ScheduledTask submit(Runnable task, long delay) {
+        return new VelocitySchedulerTask(proxyServer.getScheduler().buildTask(this, task)
+                .delay(Duration.ofSeconds(delay)).schedule());
+    }
+
+    @Override
+    public ScheduledTask submitAsync(Runnable task, long delay) {
+        return submit(task, delay);
+    }
+
+    @Override
+    public ScheduledTask submit(Runnable task, long delay, long period) {
+        return new VelocitySchedulerTask(proxyServer.getScheduler().buildTask(this, task)
+                .delay(Duration.ofSeconds(delay)).repeat(Duration.ofSeconds(period)).schedule());
+    }
+
+    @Override
+    public ScheduledTask submitAsync(Runnable task, long delay, long period) {
+        return submit(task, delay, period);
+    }
+
+    @Override
+    public void cancelAllTasks() {
+        VelocitySchedulerTask.cancelAllTasks();
+    }
+}

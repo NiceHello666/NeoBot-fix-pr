@@ -1,0 +1,19 @@
+package dev.neovoxel.neobot.event;
+
+import com.velocitypowered.api.event.ResultedEvent;
+import dev.neovoxel.neobot.game.event.LoginEvent;
+import net.kyori.adventure.text.Component;
+
+public class VelocityLoginEvent extends LoginEvent {
+    private final com.velocitypowered.api.event.connection.LoginEvent loginEvent;
+
+    public VelocityLoginEvent(com.velocitypowered.api.event.connection.LoginEvent loginEvent) {
+        super(loginEvent.getPlayer().getUsername(), loginEvent.getPlayer().getUniqueId());
+        this.loginEvent = loginEvent;
+    }
+
+    @Override
+    public void disallow(String reason) {
+        loginEvent.setResult(ResultedEvent.ComponentResult.denied(Component.text(reason)));
+    }
+}
