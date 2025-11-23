@@ -1,5 +1,6 @@
 package dev.neovoxel.neobot;
 
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import dev.neovoxel.neobot.adapter.VelocityOfflinePlayer;
 import dev.neovoxel.neobot.adapter.VelocityPlayer;
 import dev.neovoxel.neobot.adapter.VelocitySchedulerTask;
@@ -69,7 +70,7 @@ public class NeoBotVelocity implements NeoBot {
     private CommandProvider commandProvider;
 
     @Inject
-    public NeoBotVelocity(ProxyServer proxyServer, Logger logger, Path dataDirectory) {
+    public NeoBotVelocity(ProxyServer proxyServer, Logger logger, @DataDirectory Path dataDirectory) {
         this.proxyServer = proxyServer;
         this.logger = logger;
         this.dataDirectory = dataDirectory;
