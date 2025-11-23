@@ -43,6 +43,9 @@ subprojects {
         annotationProcessor("org.projectlombok:lombok:1.18.42")
         compileOnly("org.jetbrains:annotations:24.0.1")
         annotationProcessor("org.jetbrains:annotations:24.0.1")
+
+        // for migration
+        compileOnly("org.yaml:snakeyaml:2.5")
     }
 
     configure<JavaPluginExtension> {

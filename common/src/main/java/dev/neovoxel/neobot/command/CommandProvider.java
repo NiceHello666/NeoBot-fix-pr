@@ -2,6 +2,8 @@ package dev.neovoxel.neobot.command;
 
 import dev.neovoxel.neobot.NeoBot;
 import dev.neovoxel.neobot.adapter.CommandSender;
+import dev.neovoxel.neobot.migrate.ConfigMigration;
+import dev.neovoxel.neobot.migrate.DataMigration;
 import org.graalvm.polyglot.HostAccess;
 import org.graalvm.polyglot.Value;
 import org.json.JSONArray;
@@ -47,6 +49,35 @@ public abstract class CommandProvider {
                     plugin.reload(sender);
                 } else sender.sendMessage(plugin.getMessageConfig().getMessage("internal.no-permission"));
                 return;
+            } else if (args[0].equalsIgnoreCase("migrate")) {
+                if (sender.hasPermission("neobot.command.migrate")) {
+                    try {
+                        ConfigMigration.migrate(plugin, sender);
+                        DataMigration.migrate(plugin, sender);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                } else sender.sendMessage(plugin.getMessageConfig().getMessage("internal.no-permission"));
+            }
+        } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("migrate")) {
+                if (args[1].equalsIgnoreCase("config")) {
+                    if (sender.hasPermission("neobot.command.migrate")) {
+                        try {
+                            ConfigMigration.migrate(plugin, sender);
+                        } catch (Throwable e) {
+                            e.printStackTrace();
+                        }
+                    } else sender.sendMessage(plugin.getMessageConfig().getMessage("internal.no-permission"));
+                } else if (args[1].equalsIgnoreCase("data")) {
+                    if (sender.hasPermission("neobot.command.migrate")) {
+                        try {
+                            DataMigration.migrate(plugin, sender);
+                        } catch (Throwable e) {
+                            e.printStackTrace();
+                        }
+                    } else sender.sendMessage(plugin.getMessageConfig().getMessage("internal.no-permission"));
+                }
             }
         }
         methods.forEach(method -> method.execute(sender, args));

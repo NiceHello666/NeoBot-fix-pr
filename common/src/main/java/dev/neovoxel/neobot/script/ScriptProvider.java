@@ -53,6 +53,7 @@ public class ScriptProvider {
         context = Context.newBuilder("js")
                 .allowIO(true)
                 .allowAllAccess(true)
+                .allowCreateThread(true)
                 .engine(engine)
                 .build();
         context.getBindings("js").putMember("qq", plugin.getBotProvider().getBotListener());

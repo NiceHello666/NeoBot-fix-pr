@@ -35,6 +35,16 @@ public class Config {
     }
 
     @HostAccess.Export
+    public Object get(String node) {
+        JSONObject newObj = jsonObject;
+        String[] nodes = node.split("\\.");
+        for (int i = 0; i < nodes.length - 1; i++) {
+            newObj = newObj.getJSONObject(nodes[i]);
+        }
+        return newObj.get(nodes[nodes.length - 1]);
+    }
+
+    @HostAccess.Export
     public double getDouble(String node) {
         JSONObject newObj = jsonObject;
         String[] nodes = node.split("\\.");
@@ -170,6 +180,29 @@ public class Config {
         if (!lastNode.isEmpty()) {
             currentJson.put(lastNode, convertPolyglotValue(value));
         }
+    }
+
+    public void set(String node, Object value) {
+        if (node == null || node.isEmpty()) {
+            return;
+        }
+        String[] nodes = node.split("\\.");
+        if (nodes.length == 0) {
+            return;
+        }
+        JSONObject currentJson = jsonObject;
+        for (int i = 0; i < nodes.length - 1; i++) {
+            String currentNode = nodes[i];
+            if (currentNode.isEmpty()) {
+                return;
+            }
+            if (!currentJson.has(currentNode) || !(currentJson.get(currentNode) instanceof JSONObject)) {
+                currentJson.put(currentNode, new JSONObject());
+            }
+            currentJson = currentJson.getJSONObject(currentNode);
+        }
+        String lastNode = nodes[nodes.length - 1];
+        currentJson.put(lastNode, convertPolyglotValue(value));
     }
 
     protected Object convertPolyglotValue(Object value) {

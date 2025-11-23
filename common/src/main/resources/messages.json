@@ -4,11 +4,21 @@
     "help": [
       "&6NeoBot 帮助信息",
       "&a/neobot help   &b- 查看此帮助信息",
-      "&a/neobot reload   &b- 重载插件"
+      "&a/neobot reload   &b- 重载插件",
+      "&a/neobot migrate   &b- 从 AQQBot (v2) 迁移配置和数据",
+      "&a/neobot migrate config   &b- 从 AQQBot (v2) 迁移配置",
+      "&a/neobot migrate data   &b- 从 AQQBot (v2) 迁移数据"
     ],
     "reload": {
       "reloading": "&a正在重载插件...",
       "reloaded": "&a插件重载完成!"
+    },
+    "migration": {
+      "checking-libraries": "&b检查前置库中...",
+      "start-migrating-config": "&b开始迁移配置",
+      "start-migrating-data": "&b开始迁移数据",
+      "no-config": "&c未检测到可迁移的 ${config} 配置文件!",
+      "success": "&a迁移成功!"
     },
     "no-permission": "&cYou don't have permission to do this!"
   }

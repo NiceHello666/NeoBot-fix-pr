@@ -29,6 +29,11 @@ public class EnhancedConfig extends Config {
         return (super.getString("prefix") + super.getString(node));
     }
 
+    public void setOption(String node, Object value) {
+        super.put(node, value);
+        needFlushOptions.put(node, convertPolyglotValue(value));
+    }
+
     @HostAccess.Export
     public void addOption(String node, Object defaultValue) {
         if (!super.has(node)) {
@@ -46,7 +51,7 @@ public class EnhancedConfig extends Config {
             JSONObject jsonObject = new JSONObject(originContent);
             Config config = new Config(jsonObject);
             for (Map.Entry<String, Object> entry : needFlushOptions.entrySet()) {
-                config.put(entry.getKey(), entry.getValue());
+                config.set(entry.getKey(), entry.getValue());
             }
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
             writer.write(config.getJsonObject().toString(4));
@@ -54,7 +59,7 @@ public class EnhancedConfig extends Config {
             needFlushOptions.clear();
             super.jsonObject = new JSONObject(config.getJsonObject().toString().replace("&", "§"));
         } catch (IOException e) {
-            plugin.getNeoLogger().error("Failed to flush the messages config", e);
+            plugin.getNeoLogger().error("Failed to flush the config", e);
         }
     }
 }
