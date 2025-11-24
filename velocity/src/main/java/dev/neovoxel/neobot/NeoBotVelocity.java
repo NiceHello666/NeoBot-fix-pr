@@ -73,7 +73,10 @@ public class NeoBotVelocity implements NeoBot {
         this.logger = logger;
         this.dataDirectory = dataDirectory;
     }
-
+    @Subscribe
+    public void onProxyInitialization(ProxyInitializeEvent event) {
+        server.getEventManager().register(this, new PluginListener());
+    }
     @HostAccess.Export
     @Override
     public NeoLogger getNeoLogger() {
