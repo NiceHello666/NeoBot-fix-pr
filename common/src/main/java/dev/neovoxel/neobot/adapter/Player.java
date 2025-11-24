@@ -5,7 +5,7 @@ import org.graalvm.polyglot.HostAccess;
 
 import java.util.UUID;
 
-@Getter
+@Getter(onMethod_ = {@HostAccess.Export})
 public abstract class Player {
     private final String name;
     private final UUID uuid;

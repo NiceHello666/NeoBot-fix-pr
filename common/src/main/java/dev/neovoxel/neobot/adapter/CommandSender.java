@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.graalvm.polyglot.HostAccess;
 
 
-@Getter
+@Getter(onMethod_ = {@HostAccess.Export})
 public abstract class CommandSender {
     private final String name;
 
