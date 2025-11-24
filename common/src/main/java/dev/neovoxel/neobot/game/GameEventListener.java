@@ -65,4 +65,12 @@ public class GameEventListener {
     public void onPluginDisable() {
         fireEvent("PluginDisableEvent");
     }
+
+    public void onPrePluginReload() {
+        fireEvent("PrePluginReloadEvent");
+    }
+
+    public void onPluginReloaded() {
+        fireEvent("PluginReloadedEvent");
+    }
 }

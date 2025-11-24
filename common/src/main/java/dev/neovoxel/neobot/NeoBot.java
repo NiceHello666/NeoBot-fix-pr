@@ -66,6 +66,7 @@ public interface NeoBot extends ConfigProvider, GameProvider, LibraryProvider, S
     }
 
     default void reload(CommandSender sender) {
+        getGameEventListener().onPrePluginReload();
         getScriptProvider().setScriptSystemLoaded(false);
         cancelAllTasks();
         getNeoLogger().info("Reloading config...");
@@ -79,6 +80,7 @@ public interface NeoBot extends ConfigProvider, GameProvider, LibraryProvider, S
                 getNeoLogger().info("Reloading scripts...");
                 getScriptProvider().unloadScript();
                 getScriptProvider().loadScript(this);
+                getGameEventListener().onPluginReloaded();
             } catch (Throwable e) {
                 getNeoLogger().error("Failed to reload scripts", e);
             }
