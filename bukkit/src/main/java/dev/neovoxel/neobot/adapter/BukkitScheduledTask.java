@@ -4,9 +4,7 @@ import dev.neovoxel.neobot.scheduler.ScheduledTask;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.graalvm.polyglot.HostAccess;
 
 public class BukkitScheduledTask implements ScheduledTask {
     private final BukkitTask task;
@@ -15,6 +13,7 @@ public class BukkitScheduledTask implements ScheduledTask {
         this.task = task;
     }
 
+    @HostAccess.Export
     @Override
     public void cancel() {
         task.cancel();

@@ -1,5 +1,7 @@
 package dev.neovoxel.neobot.config;
 
+import dev.neovoxel.neobot.util.NeoProxyArray;
+import org.graalvm.polyglot.HostAccess;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,6 +15,7 @@ public class ScriptConfig extends EnhancedConfig {
         this.generalConfig = generalConfig;
     }
 
+    @HostAccess.Export
     @Override
     public String getString(String node) {
         try {
@@ -22,6 +25,7 @@ public class ScriptConfig extends EnhancedConfig {
         }
     }
 
+    @HostAccess.Export
     @Override
     public boolean getBoolean(String node) {
         try {
@@ -31,6 +35,7 @@ public class ScriptConfig extends EnhancedConfig {
         }
     }
 
+    @HostAccess.Export
     @Override
     public Config getObject(String node) {
         try {
@@ -40,8 +45,9 @@ public class ScriptConfig extends EnhancedConfig {
         }
     }
 
+    @HostAccess.Export
     @Override
-    public String[] getStringArray(String node) {
+    public NeoProxyArray<String> getStringArray(String node) {
         try {
             return super.getStringArray(node);
         } catch (Exception ignored) {
@@ -49,6 +55,7 @@ public class ScriptConfig extends EnhancedConfig {
         }
     }
 
+    @HostAccess.Export
     @Override
     public Config[] getArray(String node) {
         try {
@@ -58,6 +65,7 @@ public class ScriptConfig extends EnhancedConfig {
         }
     }
 
+    @HostAccess.Export
     @Override
     public double getDouble(String node) {
         try {
@@ -67,6 +75,7 @@ public class ScriptConfig extends EnhancedConfig {
         }
     }
 
+    @HostAccess.Export
     @Override
     public int getInt(String node) {
         try {
@@ -94,6 +103,7 @@ public class ScriptConfig extends EnhancedConfig {
         }
     }
 
+    @HostAccess.Export
     @Override
     public String[] getKeys() {
         try {
@@ -103,8 +113,9 @@ public class ScriptConfig extends EnhancedConfig {
         }
     }
 
+    @HostAccess.Export
     @Override
-    public long[] getNumberArray(String node) {
+    public NeoProxyArray<Long> getNumberArray(String node) {
         try {
             return super.getNumberArray(node);
         } catch (Exception ignored) {
@@ -112,6 +123,7 @@ public class ScriptConfig extends EnhancedConfig {
         }
     }
 
+    @HostAccess.Export
     @Override
     public String getMessage(String node) {
         try {

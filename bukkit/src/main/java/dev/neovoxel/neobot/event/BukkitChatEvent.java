@@ -3,6 +3,7 @@ package dev.neovoxel.neobot.event;
 import dev.neovoxel.neobot.adapter.BukkitPlayer;
 import dev.neovoxel.neobot.game.event.ChatEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.graalvm.polyglot.HostAccess;
 
 public class BukkitChatEvent extends ChatEvent {
 
@@ -13,6 +14,7 @@ public class BukkitChatEvent extends ChatEvent {
         this.event = event;
     }
 
+    @HostAccess.Export
     @Override
     public void disallow() {
         event.setCancelled(true);

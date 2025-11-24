@@ -3,21 +3,40 @@ package dev.neovoxel.neobot.library;
 import dev.neovoxel.jarflow.JarFlow;
 import dev.neovoxel.jarflow.dependency.Dependency;
 import dev.neovoxel.jarflow.repository.Repository;
+import dev.neovoxel.jarflow.util.DependencyDownloader;
 import dev.neovoxel.jarflow.util.ExternalLoader;
 import dev.neovoxel.neobot.NeoBot;
 import dev.neovoxel.neobot.util.ListUtil;
 import dev.neovoxel.nsapi.util.DatabaseStorageType;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public interface LibraryProvider {
     default void loadBasicLibrary(NeoBot plugin) throws Throwable {
         ExternalLoader.setClassLoader(Thread.currentThread().getContextClassLoader());
-        JarFlow.setLibDir(new File(plugin.getDataFolder(), "libs"));
+        File libDir = new File(plugin.getDataFolder(), "libs");
+        JarFlow.setLibDir(libDir);
+        Dependency json = Dependency.builder()
+                .groupId("org.json")
+                .artifactId("json")
+                .version("20250517")
+                .build();
+        String fileName = json.getArtifactId() + "-" + json.getVersion();
+        Path path = libDir.toPath().resolve(json.getGroupId()).resolve(json.getArtifactId()).resolve(json.getVersion()).resolve(fileName + ".jar");
+        if (!hasDownloaded(libDir, json)) {
+            DependencyDownloader.download(Repository.mavenCentral(), json, libDir, 4);
+        }
+        ExternalLoader.load(path.toFile());
         Dependency wsApi = Dependency.builder()
                 .groupId("org.java-websocket")
                 .artifactId("Java-WebSocket")
                 .version("1.6.0")
+                .build();
+        Dependency nbApi = Dependency.builder()
+                .groupId("dev.neovoxel.nbapi")
+                .artifactId("NeoBotAPI")
+                .version("1.2.1")
                 .build();
         Dependency hikariCp;
         if (Float.parseFloat(System.getProperty("java.specification.version")) < 11) {
@@ -35,7 +54,7 @@ public interface LibraryProvider {
         }
         JarFlow.addRepository(Repository.mavenCentral());
         JarFlow.addRepository(Repository.builder().url("https://maven.aliyun.com/repository/public").build());
-        JarFlow.loadDependencies(ListUtil.of(wsApi, hikariCp));
+        JarFlow.loadDependencies(ListUtil.of(wsApi, nbApi, hikariCp));
         if (Float.parseFloat(System.getProperty("java.specification.version")) < 17) {
             Dependency js = Dependency.builder()
                     .groupId("org.graalvm.js")
@@ -56,6 +75,20 @@ public interface LibraryProvider {
                     .build();
             JarFlow.loadDependencies(ListUtil.of(js, polyglot));
         }
+    }
+
+    default boolean hasDownloaded(File libDir, Dependency dependency) {
+        Path path = libDir.toPath().resolve(dependency.getGroupId()).resolve(dependency.getArtifactId()).resolve(dependency.getVersion()).resolve(dependency.getArtifactId() + "-" + dependency.getVersion() + ".jar");
+        return path.toFile().exists();
+    }
+
+    default void loadStorageApi() throws Throwable {
+        Dependency storageApi = Dependency.builder()
+                .groupId("dev.neovoxel.nsapi")
+                .artifactId("NeoStorageAPI")
+                .version("1.0.0")
+                .build();
+        JarFlow.loadDependency(storageApi);
     }
 
     default void loadStorageLibrary(DatabaseStorageType type) throws Throwable {

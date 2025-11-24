@@ -1,5 +1,8 @@
 package dev.neovoxel.neobot;
 
+import dev.neovoxel.jarflow.util.ExternalLoader;
+import dev.neovoxel.neobot.adapter.CommandSender;
+import dev.neovoxel.neobot.adapter.NeoLogger;
 import dev.neovoxel.neobot.adapter.RemoteExecutor;
 import dev.neovoxel.neobot.bot.BotProvider;
 import dev.neovoxel.neobot.command.CommandProvider;
@@ -10,8 +13,7 @@ import dev.neovoxel.neobot.library.LibraryProvider;
 import dev.neovoxel.neobot.scheduler.SchedulerProvider;
 import dev.neovoxel.neobot.script.ScriptProvider;
 import dev.neovoxel.neobot.storage.StorageProvider;
-import dev.neovoxel.neobot.adapter.CommandSender;
-import dev.neovoxel.neobot.adapter.NeoLogger;
+import org.graalvm.polyglot.HostAccess;
 
 import java.io.File;
 
@@ -90,6 +92,7 @@ public interface NeoBot extends ConfigProvider, GameProvider, LibraryProvider, S
         });
     }
 
+    @HostAccess.Export
     NeoLogger getNeoLogger();
 
     File getDataFolder();
@@ -112,9 +115,11 @@ public interface NeoBot extends ConfigProvider, GameProvider, LibraryProvider, S
 
     void registerCommands();
 
+    @HostAccess.Export
     String getPlatform();
 
     boolean isPluginLoaded(String name);
 
+    @HostAccess.Export
     RemoteExecutor getExecutorByName(String name);
 }

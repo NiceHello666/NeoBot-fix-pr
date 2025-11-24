@@ -2,6 +2,7 @@ package dev.neovoxel.neobot.event;
 
 import dev.neovoxel.neobot.game.event.LoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.graalvm.polyglot.HostAccess;
 
 public class BukkitLoginEvent extends LoginEvent {
     private final PlayerLoginEvent event;
@@ -11,6 +12,7 @@ public class BukkitLoginEvent extends LoginEvent {
         this.event = event;
     }
 
+    @HostAccess.Export
     @Override
     public void disallow(String reason) {
         event.disallow(PlayerLoginEvent.Result.KICK_OTHER, reason);

@@ -10,6 +10,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
+import org.graalvm.polyglot.HostAccess;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,16 +161,19 @@ public class BukkitConsoleSender implements ConsoleCommandSender, RemoteExecutor
         messageList.add(p1);
     }
 
+    @HostAccess.Export
     @Override
     public boolean init() {
         return true;
     }
 
+    @HostAccess.Export
     @Override
     public void execute(String command) {
         Bukkit.dispatchCommand(this, command);
     }
 
+    @HostAccess.Export
     @Override
     public String getResult() {
         return String.join("\n", messageList);

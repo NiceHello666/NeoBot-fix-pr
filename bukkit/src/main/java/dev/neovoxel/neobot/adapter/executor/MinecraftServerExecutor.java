@@ -4,6 +4,7 @@ import dev.neovoxel.neobot.adapter.RemoteExecutor;
 import dev.neovoxel.neobot.util.ReflectionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.graalvm.polyglot.HostAccess;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -15,6 +16,7 @@ public class MinecraftServerExecutor implements RemoteExecutor {
     private Object rconConsoleSource;
     private String message;
 
+    @HostAccess.Export
     @Override
     public boolean init() {
         Server server = Bukkit.getServer();
@@ -36,6 +38,7 @@ public class MinecraftServerExecutor implements RemoteExecutor {
         }
     }
 
+    @HostAccess.Export
     @Override
     public void execute(String command) {
         try {
@@ -49,6 +52,7 @@ public class MinecraftServerExecutor implements RemoteExecutor {
         }
     }
 
+    @HostAccess.Export
     @Override
     public String getResult() {
         return message;

@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.graalvm.polyglot.HostAccess;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ public class NativeExecutor implements RemoteExecutor {
     private CommandSender commandSender;
     private List<String> messages = new ArrayList<>();
 
+    @HostAccess.Export
+    @Override
     public boolean init() {
         try {
             Method method = Class.forName("org.bukkit.Bukkit").getMethod("createCommandSender", Consumer.class);
@@ -28,11 +31,13 @@ public class NativeExecutor implements RemoteExecutor {
         }
     }
 
+    @HostAccess.Export
     @Override
     public void execute(String command) {
         Bukkit.dispatchCommand(commandSender, command);
     }
 
+    @HostAccess.Export
     @Override
     public String getResult() {
         return String.join("\n", messages);

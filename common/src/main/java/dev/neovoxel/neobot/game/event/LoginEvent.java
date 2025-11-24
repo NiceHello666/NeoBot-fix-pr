@@ -1,6 +1,7 @@
 package dev.neovoxel.neobot.game.event;
 
 import lombok.Getter;
+import org.graalvm.polyglot.HostAccess;
 
 import java.util.UUID;
 
@@ -14,10 +15,12 @@ public abstract class LoginEvent {
         this.uuid = uuid;
     }
 
+    @HostAccess.Export
     public String getName() {
         return name;
     }
 
+    @HostAccess.Export
     public UUID getUuid() {
         return uuid;
     }

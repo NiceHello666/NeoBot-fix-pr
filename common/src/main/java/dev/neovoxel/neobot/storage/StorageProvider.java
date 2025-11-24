@@ -16,11 +16,13 @@ public interface StorageProvider {
     @HostAccess.Export
     DatabaseStorage getStorage();
 
+    @HostAccess.Export
     String getStorageType();
 
     void setStorageType(String type);
 
     default void loadStorage(NeoBot plugin) throws Throwable {
+        plugin.loadStorageApi();
         DatabaseStorageType storageType = DatabaseStorageType.valueOf(plugin.getGeneralConfig().getString("storage.type").toUpperCase());
         setStorageType(storageType.name().toLowerCase());
         plugin.loadStorageLibrary(storageType);

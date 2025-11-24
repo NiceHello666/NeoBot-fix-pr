@@ -7,7 +7,9 @@ import dev.neovoxel.neobot.NeoBot;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BotProvider {
     private Map<String, NBotClient> clients = new HashMap<>();
@@ -35,7 +37,7 @@ public class BotProvider {
     }
 
     public void loadBot(NeoBot plugin) throws URISyntaxException {
-        for (String type : plugin.getGeneralConfig().getStringArray("bot.type")) {
+        for (String type : plugin.getGeneralConfig().getStringArray("bot.type").getList()) {
             if (type.equalsIgnoreCase("onebot11-ws")) {
                 loadOnebot11Ws(plugin);
             } else if (type.equalsIgnoreCase("onebot11-ws-reverse")) {

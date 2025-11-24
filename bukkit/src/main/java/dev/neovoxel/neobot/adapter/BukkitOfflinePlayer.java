@@ -1,6 +1,7 @@
 package dev.neovoxel.neobot.adapter;
 
 import org.bukkit.Bukkit;
+import org.graalvm.polyglot.HostAccess;
 
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class BukkitOfflinePlayer extends OfflinePlayer {
         this.player = player;
     }
 
+    @HostAccess.Export
     @Override
     public boolean isOnline() {
         return player.isOnline();

@@ -1,11 +1,13 @@
 package dev.neovoxel.neobot.config;
 
+import dev.neovoxel.neobot.util.NeoProxyArray;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.graalvm.polyglot.HostAccess;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -98,33 +100,33 @@ public class Config {
     }
 
     @HostAccess.Export
-    public String[] getStringArray(String node) {
+    public NeoProxyArray<String> getStringArray(String node) {
         JSONObject newObj = jsonObject;
         String[] nodes = node.split("\\.");
         for (int i = 0; i < nodes.length - 1; i++) {
             newObj = newObj.getJSONObject(nodes[i]);
         }
         JSONArray array = newObj.getJSONArray(nodes[nodes.length - 1]);
-        String[] strings = new String[array.length()];
+        List<String> strings = new ArrayList<>();
         for (int i = 0; i < array.length(); i++) {
-            strings[i] = array.getString(i);
+            strings.add(array.getString(i));
         }
-        return strings;
+        return new NeoProxyArray<>(strings);
     }
 
     @HostAccess.Export
-    public long[] getNumberArray(String node) {
+    public NeoProxyArray<Long> getNumberArray(String node) {
         JSONObject newObj = jsonObject;
         String[] nodes = node.split("\\.");
         for (int i = 0; i < nodes.length - 1; i++) {
             newObj = newObj.getJSONObject(nodes[i]);
         }
         JSONArray array = newObj.getJSONArray(nodes[nodes.length - 1]);
-        long[] numbers = new long[array.length()];
+        List<Long> numbers = new ArrayList<>();
         for (int i = 0; i < array.length(); i++) {
-            numbers[i] = array.getLong(i);
+            numbers.add(array.getLong(i));
         }
-        return numbers;
+        return new NeoProxyArray<>(numbers);
     }
 
     @HostAccess.Export

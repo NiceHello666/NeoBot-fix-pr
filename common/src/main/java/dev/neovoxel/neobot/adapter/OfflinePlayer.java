@@ -1,6 +1,7 @@
 package dev.neovoxel.neobot.adapter;
 
 import lombok.Getter;
+import org.graalvm.polyglot.HostAccess;
 
 import java.util.UUID;
 
@@ -14,5 +15,6 @@ public abstract class OfflinePlayer {
         this.uuid = uuid;
     }
 
+    @HostAccess.Export
     public abstract boolean isOnline();
 }

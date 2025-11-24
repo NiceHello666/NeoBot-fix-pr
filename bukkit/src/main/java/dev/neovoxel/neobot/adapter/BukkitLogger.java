@@ -1,5 +1,7 @@
 package dev.neovoxel.neobot.adapter;
 
+import org.graalvm.polyglot.HostAccess;
+
 import java.util.logging.Logger;
 
 public class BukkitLogger implements NeoLogger {
@@ -9,27 +11,32 @@ public class BukkitLogger implements NeoLogger {
         this.logger = logger;
     }
 
+    @HostAccess.Export
     @Override
     public void info(String message) {
         logger.info(message);
     }
 
+    @HostAccess.Export
     @Override
     public void warn(String message) {
         logger.warning(message);
     }
 
+    @HostAccess.Export
     @Override
     public void error(String message) {
         logger.severe(message);
     }
 
+    @HostAccess.Export
     @Override
     public void error(String message, Throwable throwable) {
         logger.severe(message);
         throwable.printStackTrace();
     }
 
+    @HostAccess.Export
     @Override
     public void debug(String message) {
         logger.fine(message);

@@ -2,6 +2,7 @@ package dev.neovoxel.neobot.game.event;
 
 import dev.neovoxel.neobot.adapter.Player;
 import lombok.Getter;
+import org.graalvm.polyglot.HostAccess;
 
 @Getter
 public abstract class ChatEvent {
@@ -13,5 +14,6 @@ public abstract class ChatEvent {
         this.message = message;
     }
 
+    @HostAccess.Export
     public abstract void disallow();
 }

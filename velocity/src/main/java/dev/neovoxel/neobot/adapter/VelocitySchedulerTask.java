@@ -1,6 +1,7 @@
 package dev.neovoxel.neobot.adapter;
 
 import com.velocitypowered.api.scheduler.ScheduledTask;
+import org.graalvm.polyglot.HostAccess;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,7 @@ public class VelocitySchedulerTask implements dev.neovoxel.neobot.scheduler.Sche
         tasks.add(scheduledTask);
     }
 
+    @HostAccess.Export
     @Override
     public void cancel() {
         scheduledTask.cancel();

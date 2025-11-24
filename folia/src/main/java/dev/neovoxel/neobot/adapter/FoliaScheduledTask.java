@@ -3,6 +3,7 @@ package dev.neovoxel.neobot.adapter;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.graalvm.polyglot.HostAccess;
 
 public class FoliaScheduledTask implements dev.neovoxel.neobot.scheduler.ScheduledTask {
     private final ScheduledTask scheduledTask;
@@ -11,6 +12,7 @@ public class FoliaScheduledTask implements dev.neovoxel.neobot.scheduler.Schedul
         this.scheduledTask = scheduledTask;
     }
 
+    @HostAccess.Export
     @Override
     public void cancel() {
         scheduledTask.cancel();

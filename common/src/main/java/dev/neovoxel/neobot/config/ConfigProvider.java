@@ -1,7 +1,7 @@
 package dev.neovoxel.neobot.config;
 
 import dev.neovoxel.neobot.NeoBot;
-import dev.neovoxel.neobot.script.Script;
+import org.graalvm.polyglot.HostAccess;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -30,12 +30,15 @@ public interface ConfigProvider {
 
     void setScriptConfig(ScriptConfig config);
 
+    @HostAccess.Export
     ScriptConfig getScriptConfig();
 
+    @HostAccess.Export
     EnhancedConfig getMessageConfig();
 
     void setGeneralConfig(EnhancedConfig config);
 
+    @HostAccess.Export
     EnhancedConfig getGeneralConfig();
 
     default void loadGeneralConfig(NeoBot plugin) {

@@ -5,7 +5,6 @@ import dev.neovoxel.neobot.adapter.executor.BukkitConsoleSender;
 import dev.neovoxel.neobot.adapter.executor.DedicatedExecutor;
 import dev.neovoxel.neobot.adapter.executor.MinecraftServerExecutor;
 import dev.neovoxel.neobot.adapter.executor.NativeExecutor;
-import dev.neovoxel.neobot.bot.BotListener;
 import dev.neovoxel.neobot.bot.BotProvider;
 import dev.neovoxel.neobot.command.CommandProvider;
 import dev.neovoxel.neobot.config.EnhancedConfig;
@@ -13,11 +12,7 @@ import dev.neovoxel.neobot.config.ScriptConfig;
 import dev.neovoxel.neobot.event.BukkitEventManager;
 import dev.neovoxel.neobot.game.GameEventListener;
 import dev.neovoxel.neobot.scheduler.ScheduledTask;
-import dev.neovoxel.neobot.script.Script;
 import dev.neovoxel.neobot.script.ScriptProvider;
-import dev.neovoxel.neobot.adapter.NeoLogger;
-import dev.neovoxel.neobot.adapter.OfflinePlayer;
-import dev.neovoxel.neobot.adapter.Player;
 import dev.neovoxel.nsapi.DatabaseStorage;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,24 +34,30 @@ public class NeoBotBukkit extends JavaPlugin implements NeoBot {
     @Setter
     private ScriptProvider scriptProvider;
 
+    @Getter(onMethod_ = {@HostAccess.Export})
     @Setter
     private EnhancedConfig messageConfig;
 
+    @Getter(onMethod_ = {@HostAccess.Export})
     @Setter
     private EnhancedConfig generalConfig;
 
+    @Getter(onMethod_ = {@HostAccess.Export})
     @Setter
     private ScriptConfig scriptConfig;
 
+    @Getter(onMethod_ = {@HostAccess.Export})
     @Setter
     private DatabaseStorage storage;
 
+    @Getter(onMethod_ = {@HostAccess.Export})
     @Setter
     private String storageType;
 
     @Setter
     private CommandProvider commandProvider;
 
+    @HostAccess.Export
     @Override
     public NeoLogger getNeoLogger() {
         return new BukkitLogger(getLogger());
@@ -68,31 +69,37 @@ public class NeoBotBukkit extends JavaPlugin implements NeoBot {
         this.gameEventListener = listener;
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submit(Runnable task) {
         return new BukkitScheduledTask(Bukkit.getScheduler().runTask(this, task));
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submitAsync(Runnable task) {
         return new BukkitScheduledTask(Bukkit.getScheduler().runTaskAsynchronously(this, task));
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submit(Runnable task, long delay) {
         return new BukkitScheduledTask(Bukkit.getScheduler().runTaskLater(this, task, delay * 20));
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submitAsync(Runnable task, long delay) {
         return new BukkitScheduledTask(Bukkit.getScheduler().runTaskLaterAsynchronously(this, task, delay * 20));
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submit(Runnable task, long delay, long period) {
         return new BukkitScheduledTask(Bukkit.getScheduler().runTaskTimer(this, task, delay * 20, period * 20));
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submitAsync(Runnable task, long delay, long period) {
         return new BukkitScheduledTask(Bukkit.getScheduler().runTaskTimerAsynchronously(this, task, delay * 20, period * 20));
@@ -113,6 +120,7 @@ public class NeoBotBukkit extends JavaPlugin implements NeoBot {
         this.disable();
     }
 
+    @HostAccess.Export
     @Override
     public void broadcast(String message) {
         Bukkit.broadcastMessage(message);
@@ -124,16 +132,19 @@ public class NeoBotBukkit extends JavaPlugin implements NeoBot {
         commandProvider1.registerCommand();
     }
 
+    @HostAccess.Export
     @Override
     public Player getOnlinePlayer(String name) {
         return new BukkitPlayer(Bukkit.getPlayer(name));
     }
 
+    @HostAccess.Export
     @Override
     public OfflinePlayer getOfflinePlayer(String name) {
         return new BukkitOfflinePlayer(Bukkit.getOfflinePlayer(name));
     }
 
+    @HostAccess.Export
     @Override
     public Player[] getOnlinePlayers() {
         List<Player> players = new ArrayList<>();
@@ -143,6 +154,7 @@ public class NeoBotBukkit extends JavaPlugin implements NeoBot {
         return players.toArray(new Player[0]);
     }
 
+    @HostAccess.Export
     @Override
     public String externalParsePlaceholder(String message, OfflinePlayer player) {
         try {
@@ -158,6 +170,7 @@ public class NeoBotBukkit extends JavaPlugin implements NeoBot {
         }
     }
 
+    @HostAccess.Export
     @Override
     public String getPlatform() {
         return "Bukkit";
@@ -168,6 +181,7 @@ public class NeoBotBukkit extends JavaPlugin implements NeoBot {
         return Bukkit.getPluginManager().isPluginEnabled(name);
     }
 
+    @HostAccess.Export
     @Override
     public RemoteExecutor getExecutorByName(String name) {
         if (name.equalsIgnoreCase("native")) {

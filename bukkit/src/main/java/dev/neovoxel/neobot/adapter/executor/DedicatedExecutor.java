@@ -4,11 +4,10 @@ import dev.neovoxel.neobot.adapter.RemoteExecutor;
 import dev.neovoxel.neobot.util.ReflectionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.graalvm.polyglot.HostAccess;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DedicatedExecutor implements RemoteExecutor {
 
@@ -16,6 +15,7 @@ public class DedicatedExecutor implements RemoteExecutor {
     private Method method;
     private String message = "";
 
+    @HostAccess.Export
     @Override
     public boolean init() {
         try {
@@ -28,6 +28,7 @@ public class DedicatedExecutor implements RemoteExecutor {
         return false;
     }
 
+    @HostAccess.Export
     @Override
     public void execute(String command) {
         try {
@@ -37,6 +38,7 @@ public class DedicatedExecutor implements RemoteExecutor {
         }
     }
 
+    @HostAccess.Export
     @Override
     public String getResult() {
         return message;

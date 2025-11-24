@@ -2,6 +2,7 @@ package dev.neovoxel.neobot.adapter;
 
 import org.slf4j.Logger;
 
+
 public class DefaultNeoLogger implements dev.neovoxel.neobot.adapter.NeoLogger {
     private final Logger logger;
 

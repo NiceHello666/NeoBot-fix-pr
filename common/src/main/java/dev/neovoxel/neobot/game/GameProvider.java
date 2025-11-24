@@ -2,6 +2,7 @@ package dev.neovoxel.neobot.game;
 
 import dev.neovoxel.neobot.adapter.OfflinePlayer;
 import dev.neovoxel.neobot.adapter.Player;
+import org.graalvm.polyglot.HostAccess;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,16 +11,22 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public interface GameProvider {
+    @HostAccess.Export
     Player getOnlinePlayer(String name);
 
+    @HostAccess.Export
     Player[] getOnlinePlayers();
 
+    @HostAccess.Export
     OfflinePlayer getOfflinePlayer(String name);
 
+    @HostAccess.Export
     void broadcast(String message);
 
+    @HostAccess.Export
     String externalParsePlaceholder(String message, OfflinePlayer player); // it supports Player (online)
 
+    @HostAccess.Export
     default String parsePlaceholder(String message, OfflinePlayer player) {
         String regex = "%internal_neobot_player_list_([^%]*)%";
 

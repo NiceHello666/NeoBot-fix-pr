@@ -2,6 +2,7 @@ package dev.neovoxel.neobot.adapter;
 
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.util.GameProfile;
+import org.graalvm.polyglot.HostAccess;
 
 public class VelocityOfflinePlayer extends OfflinePlayer {
     private final ProxyServer proxyServer;
@@ -13,6 +14,7 @@ public class VelocityOfflinePlayer extends OfflinePlayer {
         this.gameProfile = gameProfile;
     }
 
+    @HostAccess.Export
     @Override
     public boolean isOnline() {
         return proxyServer.getPlayer(gameProfile.getId()).isPresent();

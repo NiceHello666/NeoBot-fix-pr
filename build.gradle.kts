@@ -20,17 +20,20 @@ subprojects {
 
     dependencies {
         // basic
-        implementation("dev.neovoxel.jarflow:JarFlow:1.4.0")
+        implementation("dev.neovoxel.jarflow:JarFlow:1.5.0") {
+            exclude("org.json")
+        }
         compileOnly("org.java-websocket:Java-WebSocket:1.6.0")
-        implementation("dev.neovoxel.nbapi:NeoBotAPI:1.2.1") {
+        compileOnly("dev.neovoxel.nbapi:NeoBotAPI:1.2.1") {
             exclude("org.java-websocket")
         }
+        // implementation("io.github.classgraph:classgraph:4.8.184")
         compileOnly("org.json:json:20250517")
         compileOnly("org.slf4j:slf4j-api:2.0.17")
         compileOnly("org.graalvm.js:js:22.0.0.2")
 
         // storage
-        implementation("dev.neovoxel.nsapi:NeoStorageAPI:1.0.0")
+        compileOnly("dev.neovoxel.nsapi:NeoStorageAPI:1.0.0")
         compileOnly("com.zaxxer:HikariCP:4.0.3")
         compileOnly("com.mysql:mysql-connector-j:8.2.0")
         compileOnly("org.mariadb.jdbc:mariadb-java-client:3.5.6")

@@ -1,12 +1,17 @@
 package dev.neovoxel.neobot.script;
 
+import dev.neovoxel.jarflow.JarFlow;
 import dev.neovoxel.neobot.NeoBot;
 import lombok.Getter;
 import lombok.Setter;
-import org.graalvm.polyglot.*;
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Engine;
+import org.graalvm.polyglot.HostAccess;
+import org.graalvm.polyglot.Value;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
@@ -16,11 +21,11 @@ public class ScriptProvider {
     @Setter
     private boolean scriptSystemLoaded = false;
 
-    private List<Script> scripts = new ArrayList<>();
+    private final List<Script> scripts = new ArrayList<>();
 
-    private List<Value> placeholderParsers = new ArrayList<>();
+    private final List<Value> placeholderParsers = new ArrayList<>();
     
-    private Map<String, Value> methods = new HashMap<>();
+    private final Map<String, Value> methods = new HashMap<>();
 
     private final NeoBot plugin;
 
@@ -30,9 +35,13 @@ public class ScriptProvider {
 
     int pluginSchemaVersion = 1;
 
-    private List<Context> contexts = new ArrayList<>();
+    private final List<Context> contexts = new ArrayList<>();
 
     private static final Engine engine;
+
+    private static final List<Class> exposed = new ArrayList<>();
+
+    private static final HostAccess hostAccess;
 
     static {
         OutputStream stream = null;
@@ -50,6 +59,22 @@ public class ScriptProvider {
             builder.logHandler(stream);
         }
         engine = builder.build();
+        try {
+            exposed.addAll(JarFlow.searchClasses("dev.neovoxel.nsapi"));
+            exposed.addAll(JarFlow.searchClasses("dev.neovoxel.nbapi.action"));
+            exposed.addAll(JarFlow.searchClasses("dev.neovoxel.nbapi.event"));
+            exposed.addAll(JarFlow.searchClasses("dev.neovoxel.nbapi.util"));
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        HostAccess.Builder builder1 = HostAccess.newBuilder(HostAccess.EXPLICIT);
+        builder1.allowAccessAnnotatedBy(HostAccess.Export.class);
+        for (Class clazz : exposed) {
+            for (Method method : clazz.getDeclaredMethods()) {
+                builder1.allowAccess(method);
+            }
+        }
+        hostAccess = builder1.build();
     }
 
     public void addLoadedScript(Script script) {
@@ -136,7 +161,7 @@ public class ScriptProvider {
         }
         Context context = Context.newBuilder("js")
                 .allowIO(true)
-                .allowAllAccess(true)
+                .allowHostAccess(hostAccess)
                 .allowCreateThread(true)
                 .engine(engine)
                 .build();

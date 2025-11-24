@@ -1,11 +1,8 @@
 package dev.neovoxel.neobot;
 
-import com.velocitypowered.api.plugin.annotation.DataDirectory;
-import dev.neovoxel.neobot.adapter.VelocityOfflinePlayer;
-import dev.neovoxel.neobot.adapter.VelocityPlayer;
-import dev.neovoxel.neobot.adapter.VelocitySchedulerTask;
 import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.util.GameProfile;
 import dev.neovoxel.neobot.adapter.*;
@@ -20,6 +17,7 @@ import dev.neovoxel.nsapi.DatabaseStorage;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import org.graalvm.polyglot.HostAccess;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -45,23 +43,23 @@ public class NeoBotVelocity implements NeoBot {
     @Setter
     private ScriptProvider scriptProvider;
 
-    @Getter
+    @Getter(onMethod_ = {@HostAccess.Export})
     @Setter
     private EnhancedConfig messageConfig;
 
-    @Getter
+    @Getter(onMethod_ = {@HostAccess.Export})
     @Setter
     private EnhancedConfig generalConfig;
 
-    @Getter
+    @Getter(onMethod_ = {@HostAccess.Export})
     @Setter
     private ScriptConfig scriptConfig;
 
-    @Getter
+    @Getter(onMethod_ = {@HostAccess.Export})
     @Setter
     private DatabaseStorage storage;
 
-    @Getter
+    @Getter(onMethod_ = {@HostAccess.Export})
     @Setter
     private String storageType;
 
@@ -76,6 +74,7 @@ public class NeoBotVelocity implements NeoBot {
         this.dataDirectory = dataDirectory;
     }
 
+    @HostAccess.Export
     @Override
     public NeoLogger getNeoLogger() {
         return new DefaultNeoLogger(logger);
@@ -97,6 +96,7 @@ public class NeoBotVelocity implements NeoBot {
         commandProvider1.registerCommand();
     }
 
+    @HostAccess.Export
     @Override
     public String getPlatform() {
         return proxyServer.getVersion().getName();
@@ -107,63 +107,75 @@ public class NeoBotVelocity implements NeoBot {
         return proxyServer.getPluginManager().isLoaded(name);
     }
 
+    @HostAccess.Export
     @Override
     public RemoteExecutor getExecutorByName(String name) {
         return null;
     }
 
+    @HostAccess.Export
     @Override
     public Player getOnlinePlayer(String name) {
         return new VelocityPlayer(proxyServer.getPlayer(name).get());
     }
 
+    @HostAccess.Export
     @Override
     public Player[] getOnlinePlayers() {
         return proxyServer.getAllPlayers().stream().map(VelocityPlayer::new).toArray(VelocityPlayer[]::new);
     }
 
+    @HostAccess.Export
     @Override
     public OfflinePlayer getOfflinePlayer(String name) {
         return new VelocityOfflinePlayer(proxyServer, GameProfile.forOfflinePlayer(name));
     }
 
+    @HostAccess.Export
     @Override
     public void broadcast(String message) {
         proxyServer.sendMessage(Component.text(message));
     }
 
+    @HostAccess.Export
     @Override
     public String externalParsePlaceholder(String message, OfflinePlayer player) {
         return message;
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submit(Runnable task) {
         return new VelocitySchedulerTask(proxyServer.getScheduler().buildTask(this, task).schedule());
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submitAsync(Runnable task) {
         return submit(task);
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submit(Runnable task, long delay) {
         return new VelocitySchedulerTask(proxyServer.getScheduler().buildTask(this, task)
                 .delay(Duration.ofSeconds(delay)).schedule());
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submitAsync(Runnable task, long delay) {
         return submit(task, delay);
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submit(Runnable task, long delay, long period) {
         return new VelocitySchedulerTask(proxyServer.getScheduler().buildTask(this, task)
                 .delay(Duration.ofSeconds(delay)).repeat(Duration.ofSeconds(period)).schedule());
     }
 
+    @HostAccess.Export
     @Override
     public ScheduledTask submitAsync(Runnable task, long delay, long period) {
         return submit(task, delay, period);

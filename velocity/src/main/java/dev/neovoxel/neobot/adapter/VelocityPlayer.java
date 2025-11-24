@@ -1,6 +1,7 @@
 package dev.neovoxel.neobot.adapter;
 
 import net.kyori.adventure.text.Component;
+import org.graalvm.polyglot.HostAccess;
 
 public class VelocityPlayer extends Player {
 
@@ -11,11 +12,13 @@ public class VelocityPlayer extends Player {
         this.player = player;
     }
 
+    @HostAccess.Export
     @Override
     public void sendMessage(String message) {
         player.sendMessage(Component.text(message));
     }
 
+    @HostAccess.Export
     @Override
     public void kick(String message) {
         player.disconnect(Component.text(message));

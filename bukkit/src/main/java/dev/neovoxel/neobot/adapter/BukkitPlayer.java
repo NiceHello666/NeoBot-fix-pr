@@ -1,5 +1,7 @@
 package dev.neovoxel.neobot.adapter;
 
+import org.graalvm.polyglot.HostAccess;
+
 public class BukkitPlayer extends Player {
     private final org.bukkit.entity.Player player;
 
@@ -8,16 +10,19 @@ public class BukkitPlayer extends Player {
         this.player = player;
     }
 
+    @HostAccess.Export
     @Override
     public void sendMessage(String message) {
         player.sendMessage(message);
     }
 
+    @HostAccess.Export
     @Override
     public void kick(String message) {
         player.kickPlayer(message);
     }
 
+    @HostAccess.Export
     @Override
     public boolean hasPermission(String node) {
         return player.hasPermission(node);

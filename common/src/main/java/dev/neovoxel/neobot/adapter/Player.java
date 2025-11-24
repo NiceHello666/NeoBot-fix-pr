@@ -1,6 +1,7 @@
 package dev.neovoxel.neobot.adapter;
 
 import lombok.Getter;
+import org.graalvm.polyglot.HostAccess;
 
 import java.util.UUID;
 
@@ -14,9 +15,12 @@ public abstract class Player {
         this.uuid = uuid;
     }
 
+    @HostAccess.Export
     public abstract void sendMessage(String message);
 
+    @HostAccess.Export
     public abstract void kick(String message);
 
+    @HostAccess.Export
     public abstract boolean hasPermission(String node);
 }
