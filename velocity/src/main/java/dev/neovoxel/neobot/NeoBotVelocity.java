@@ -72,6 +72,7 @@ public class NeoBotVelocity implements NeoBot {
         this.proxyServer = proxyServer;
         this.logger = logger;
         this.dataDirectory = dataDirectory;
+        this.enable();
     }
 
     @HostAccess.Export
