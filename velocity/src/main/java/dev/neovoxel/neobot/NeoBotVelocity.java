@@ -1,4 +1,4 @@
-package dev.neovoxel.neobot;
+7package dev.neovoxel.neobot;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.Plugin;
@@ -76,7 +76,6 @@ public class NeoBotVelocity implements NeoBot {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        server.getEventManager().register(this, new dev.neovoxel.neobot.event.VelocityEventManager());
         this.enable();
     }
     
