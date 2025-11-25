@@ -78,7 +78,8 @@ public class NeoBotVelocity implements NeoBot {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        server.getEventManager().register(this, new dev.neovoxel.neobot.event.VelocityEventManager());
+        proxyServer.getEventManager().register(this, new dev.neovoxel.neobot.event.VelocityEventManager());
+        registerCommand();
     }
     
     @HostAccess.Export
