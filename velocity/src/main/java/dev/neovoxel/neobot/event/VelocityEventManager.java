@@ -13,11 +13,7 @@ public class VelocityEventManager {
     public VelocityEventManager(NeoBotVelocity plugin) {
         this.plugin = plugin;
     }
-
-    @Subscribe
-    public void onProxyInitialization(ProxyInitializeEvent event) {
-        this.enable();
-    }
+    
     @Subscribe
     public void onLogin(LoginEvent loginEvent) {
         plugin.getGameEventListener().onLogin(new VelocityLoginEvent(loginEvent));
