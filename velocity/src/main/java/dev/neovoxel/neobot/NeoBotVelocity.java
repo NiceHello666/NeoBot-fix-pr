@@ -1,4 +1,4 @@
-7package dev.neovoxel.neobot;
+package dev.neovoxel.neobot;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.Plugin;
