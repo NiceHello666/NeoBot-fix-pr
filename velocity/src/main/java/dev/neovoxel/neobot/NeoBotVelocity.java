@@ -1,8 +1,6 @@
 package dev.neovoxel.neobot;
 
 import com.google.inject.Inject;
-import com.velocitypowered.api.event.Subscribe;
-import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -74,12 +72,6 @@ public class NeoBotVelocity implements NeoBot {
         this.proxyServer = proxyServer;
         this.logger = logger;
         this.dataDirectory = dataDirectory;
-    }
-
-    @Subscribe
-    public void onProxyInitialization(ProxyInitializeEvent event) {
-        proxyServer.getEventManager().register(this, new dev.neovoxel.neobot.event.VelocityEventManager());
-        registerCommand();
     }
     
     @HostAccess.Export
