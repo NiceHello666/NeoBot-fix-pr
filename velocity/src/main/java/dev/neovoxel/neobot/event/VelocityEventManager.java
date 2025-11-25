@@ -10,11 +10,14 @@ import dev.neovoxel.neobot.adapter.VelocityPlayer;
 
 public class VelocityEventManager {
     private final NeoBotVelocity plugin;
-
     public VelocityEventManager(NeoBotVelocity plugin) {
         this.plugin = plugin;
     }
 
+    @Subscribe
+    public void onProxyInitialization(ProxyInitializeEvent event) {
+        this.enable();
+    }
     @Subscribe
     public void onLogin(LoginEvent loginEvent) {
         plugin.getGameEventListener().onLogin(new VelocityLoginEvent(loginEvent));
